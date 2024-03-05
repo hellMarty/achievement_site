@@ -9,7 +9,7 @@ Frontend is running with the help of VITE (https://vitejs.dev/).
 
 For data fetching the SWR is used (https://swr.vercel.app/).
 
-- Runs by executing "npm run dev" in the Frontend folder.
+- Runs by executing `npm run dev` in the Frontend folder.
 
 ---
 #### BACKEND
@@ -19,7 +19,7 @@ The backend is running on Nodemon.
 
 Requests are handled with the help of the express (https://www.react.express/).
 
-- Runs by executing "npm run start" in the Backend folder.
+- Runs by executing `npm run start` in the Backend folder.
 
 
 ---
