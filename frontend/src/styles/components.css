@@ -5,11 +5,17 @@
 .achievement-card {
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     margin: 2rem 0;
-    width: 70%;
+    width: 100%;
     border: 0.1rem solid black;
     border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.achievement-card__info {
+    text-align: center;
+    width: 100%;
     padding: 0.5rem;
 }
 
@@ -18,12 +24,10 @@
     align-items: center;
     width: 100%;
     justify-content: space-between;
-
 }
 
-.profile-picture__image {
-    width: 100px;
-    max-height: 100px;
-    border: 1px solid gray;
-    border-radius: 2px;
+.achievement-card__image {
+    width: 10rem;
+    background-color: black;
+    margin: 0.5rem;
 }

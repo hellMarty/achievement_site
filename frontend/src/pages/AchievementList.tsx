@@ -13,7 +13,7 @@ export default function AchievementList() {
 
     return (
         <div className="achievement-list">
-            <div className="achievement-list__header">
+            <div>
                 <h1>
                     List of Achievements
                 </h1>
@@ -24,9 +24,7 @@ export default function AchievementList() {
                     <li>Filtering of the achievements</li>
                 </ul>
             </div>
-            <div className="achievement-list">
                 {data.data.map((achievement: IAchievementProps, index: string) => <AchievementCard key={index} {...achievement} refresh={mutate} />)}
-            </div>
         </div>
     )
 };
