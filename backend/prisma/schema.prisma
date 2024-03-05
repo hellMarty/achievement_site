@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  option      String
+  createdAt   DateTime @default(now())
+}
+
+model User {
+  id   String @id @default(uuid())
+  name String
+}
