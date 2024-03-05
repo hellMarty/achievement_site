@@ -9,6 +9,8 @@ Frontend is running with the help of VITE (https://vitejs.dev/).
 
 For data fetching the SWR is used (https://swr.vercel.app/).
 
+For date formatting the date-fns is used (https://date-fns.org/)
+
 - Runs by executing `npm run dev` in the Frontend folder.
 
 ---
