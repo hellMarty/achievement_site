@@ -59,8 +59,6 @@ const renderCreateForm = (props: { form: IForm; setForm: any; }) => {
 };
 
 const submitForm = (props: { form: IForm; setForm: (arg: IForm) => void; }) => {
-    console.log("hello", props.form);
-
     fetch(`${import.meta.env.VITE_APP}achievement`, {
         method: 'POST',
         headers: {
@@ -72,7 +70,6 @@ const submitForm = (props: { form: IForm; setForm: (arg: IForm) => void; }) => {
             'option': props.form.option,
         }),
     });
-
 
     props.setForm({ option: "0", title: "", description: "" });
 };

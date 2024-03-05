@@ -11,5 +11,6 @@ api.use(cors());
 api.get("/", achievement.get);
 
 api.post("/achievement", achievement.create);
+api.get("/achievements", achievement.getAll);
 
 api.listen(port, () => console.log(`Example app listening on port ${port}`));

@@ -26,3 +26,19 @@ export const create = async (req: Request, res: Response) => {
         data: achievement,
     });
 };
+
+export const getAll = async (req: Request, res: Response) => {
+    const achievements = await prisma.achievement.findMany({
+        select: {
+            title: true,
+            description: true,
+            option: true,
+            createdAt: true,
+        },
+    });
+
+    return res.send({
+        status: 'success',
+        data: achievements,
+    })
+}

@@ -9,8 +9,6 @@ export default function Home() {
     if (error) return <div>failed to load </div>
     if (!data) return <div>loading...</div>
 
-    console.log("backend", data)
-
     return (
         <div>
             <h1>
