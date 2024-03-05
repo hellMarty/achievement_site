@@ -41,7 +41,7 @@ const renderCreateForm = (props: { form: IForm; setForm: any; }) => {
                 </Form.Group>
                 
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Select placeholder="Select Placeholder" value={props.form.option} 
+                    <Form.Select value={props.form.option} 
                             onChange={(e: { target: { value: string; }; }) => props.setForm({ ...props.form, option: e.target.value })}>
                         <option value="0">-- Select field of Achievement --</option>
                         <option value="1">Development</option>
