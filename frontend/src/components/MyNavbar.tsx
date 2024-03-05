@@ -12,7 +12,7 @@ export default function MyNavbar() {
                 <Nav className="me-auto">
                     <Link className="nav link" to="/about">About</Link>
                     <Link className="nav link" to="/achievement-list">Achievements</Link>
-                    <Link className="nav link" to="/achievement-new">CreateAchievement</Link>
+                    <Link className="nav link" to="/achievement-new">Create Achievement</Link>
                     <Link className="nav link" to="/contact">Contact</Link>
                     <Link className="nav link" to="/profile">Sign In</Link>
                 </Nav>

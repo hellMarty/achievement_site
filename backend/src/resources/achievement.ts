@@ -30,10 +30,14 @@ export const create = async (req: Request, res: Response) => {
 export const getAll = async (req: Request, res: Response) => {
     const achievements = await prisma.achievement.findMany({
         select: {
+            id: true,
             title: true,
             description: true,
             option: true,
             createdAt: true,
+        },
+        where: {
+            deletedAt: null,
         },
     });
 
@@ -41,4 +45,39 @@ export const getAll = async (req: Request, res: Response) => {
         status: 'success',
         data: achievements,
     })
+}
+
+export const remove = async (req: Request, res: Response) => {
+    const achievementId = req.params.id;
+    
+    const achievement = await prisma.achievement.findUnique({
+        where: {
+            id: achievementId,
+        },
+    });
+
+    if (!achievement) {
+        return res.send(404).send({
+            status: 'error',
+            data: {},
+            message: 'Message not found',
+        })
+    }
+
+    const removedAchievement = await prisma.achievement.update({
+        where: {
+            id: achievementId,
+        },
+        data: {
+            deletedAt: new Date(),
+        },
+    });
+
+    return res.send({
+        stauts: 'success',
+        data: removedAchievement,
+    })
+
+
+
 }

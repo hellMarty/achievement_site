@@ -1,3 +1,22 @@
 .nav {
-    margin: 20px;
+    margin: 1rem;
+}
+
+.achievement-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 2rem 0;
+    width: 70%;
+    border: 0.1rem solid black;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.achievement-card__footer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+
 }

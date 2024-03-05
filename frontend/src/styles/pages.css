@@ -1,0 +1,15 @@
+.routes-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.achievement-list__header {
+    width: fit-content;
+}
+
+.achievement-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

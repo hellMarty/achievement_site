@@ -13,6 +13,7 @@ model Achievement {
   description String
   option      String
   createdAt   DateTime @default(now())
+  deletedAt   DateTime?
 }
 
 model User {

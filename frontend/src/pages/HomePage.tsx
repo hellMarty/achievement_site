@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <div>
             <h1>
-                Welcom to the Achievement Page
+                Welcome to the Achievement Page
             </h1>
             <h3>
                 Where all your dreams come true!
