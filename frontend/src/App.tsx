@@ -6,14 +6,15 @@ import Contact from "./pages/Contact";
 import CreateAchievement from "./pages/CreateAchievement";
 import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
-import MyNavbar from "./components/MyNavbar";
+import MainNavbar from "./components/MainNavbar";
 import ErrorPage from "./pages/ErrorPage";
+import Footer from "./components/Footer";
 import "./styles/pages.css";
 
 export default function App() {
     return (
         <body className="app">
-            <MyNavbar />
+            <MainNavbar />
             <div className="routes-body">
                 <Routes>
                     <Route path="/" element={<HomePage />} />
@@ -25,6 +26,8 @@ export default function App() {
                     <Route path="*" element={<ErrorPage />} />
                 </Routes>
             </div>
+            <Footer />
         </body>
+    
     )
 }

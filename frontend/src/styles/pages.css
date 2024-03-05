@@ -1,14 +1,24 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
 .routes-body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    flex-grow: 1;
 }
 
 .achievement-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%;
+    width: 100%;
 }
 
 .profile-picture__image {
