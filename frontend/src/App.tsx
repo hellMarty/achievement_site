@@ -13,7 +13,7 @@ import "./styles/pages.css";
 
 export default function App() {
     return (
-        <body className="app">
+        <div className="app">
             <MainNavbar />
             <div className="routes-body">
                 <Routes>
@@ -27,7 +27,6 @@ export default function App() {
                 </Routes>
             </div>
             <Footer />
-        </body>
-    
+        </div>
     )
 }

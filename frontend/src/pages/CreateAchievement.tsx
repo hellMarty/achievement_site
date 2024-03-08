@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import useSWR from "swr";
+import { IAchievementType } from "../interface/AchievementInterface";
+import fetcher from "../models/fetcher";
 
 interface IForm {
     title: string,
     description: string,
-    option: string,
+    achievementTypeId: string,
 }
 
-
 export default function CreateAchievement() {
-    const [form, setForm] = useState({ option: "0", title: "", description: "" })
+    const [form, setForm] = useState({ achievementTypeId: "0", title: "", description: "" })
+    const { data, error } = useSWR(`${import.meta.env.VITE_APP}achievementType`, fetcher);
+
+    if (error) { return <div>Failed to load...</div> }
+    if (!data) return <div>loading...</div>
 
     return (
         <div>
@@ -19,39 +25,43 @@ export default function CreateAchievement() {
                 <li>Create template for the achievement</li>
                 <li>Modify template based on the inputs</li>
             </ul>
-            {renderCreateForm({ form, setForm })}
+            {renderCreateForm({ form, setForm, data })}
         </div>
     )
 };
 
-const renderCreateForm = (props: { form: IForm; setForm: any; }) => {
+const renderCreateForm = (props: { form: IForm; setForm: (formData: IForm) => void; data: { _: string, data: IAchievementType[] } }) => {
     return (
         <div>
             <Form>
                 <Form.Group className="mb-3" controlId="formAchivementTitle">
                     <Form.Label>Achivement Title</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Achivement Title" value={props.form.title} 
-                            onChange={(e: { target: { value: string; }; }) => props.setForm({ ...props.form, title: e.target.value })} />
+                    <Form.Control type="text" placeholder="Enter Achivement Title" value={props.form.title}
+                        onChange={(e) => props.setForm({ ...props.form, title: e.target.value })} />
                 </Form.Group>
-                
+
                 <Form.Group className="mb-3" controlId="formAchivementDesc">
                     <Form.Label>Achievement Desctiption</Form.Label>
-                    <Form.Control as="textarea" rows={3} placeholder="Enter Achivement Description" value={props.form.description} 
-                            onChange={(e: { target: { value: string; }; }) => props.setForm({ ...props.form, description: e.target.value })} />
+                    <Form.Control as="textarea" rows={3} placeholder="Enter Achivement Description" value={props.form.description}
+                        onChange={(e) => props.setForm({ ...props.form, description: e.target.value })} />
                 </Form.Group>
-                
+
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Select value={props.form.option} 
-                            onChange={(e: { target: { value: string; }; }) => props.setForm({ ...props.form, option: e.target.value })}>
+                    <Form.Select value={props.form.achievementTypeId}
+                        onChange={(e) => props.setForm({ ...props.form, achievementTypeId: e.target.value })}>
                         <option value="0">-- Select field of Achievement --</option>
-                        <option value="1">Development</option>
-                        <option value="2">Environment</option>
-                        <option value="3">Other</option>
+                        
+                        {props.data.data.map((opt: IAchievementType, index: number) => {
+                            return (
+                                <option value={opt.id} key={index}>{opt.name}</option>
+                            )
+                        })}
+
                     </ Form.Select>
                 </Form.Group>
-                
+
                 <Button variant="primary" type="button" onClick={() => submitForm(props)}
-                        disabled={props.form.option === "0" || props.form.title === "" || props.form.description === ""}>
+                    disabled={props.form.achievementTypeId === "0" || props.form.title === "" || props.form.description === ""}>
                     Submit
                 </Button>
             </Form>
@@ -66,11 +76,9 @@ const submitForm = (props: { form: IForm; setForm: (arg: IForm) => void; }) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            'title': props.form.title,
-            'description': props.form.description,
-            'option': props.form.option,
+            ...props.form,
         }),
     });
 
-    props.setForm({ option: "0", title: "", description: "" });
+    props.setForm({ achievementTypeId: "0", title: "", description: "" });
 };

@@ -1,0 +1,11 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "LocalDB",
+            "database": "${workspaceFolder:achievement_site}/backend/prisma/dev.db"
+        }
+    ]
+}

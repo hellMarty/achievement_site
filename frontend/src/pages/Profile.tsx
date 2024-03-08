@@ -5,7 +5,7 @@ export default function Profile() {
         <Link to="/edit-page" className="navigation__profile profile link">
             <div className="navigation__profile-picture profile__picture profile-picture">
                 <img 
-                    src={"../public/default-profile.jpg"}
+                    src={"../default-profile.jpg"}
                     className="profile-picture__image image" 
                     alt="Profile picture"/>
             </div>

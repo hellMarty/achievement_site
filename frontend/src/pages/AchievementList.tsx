@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import fetcher from "../models/fetcher";
-import AchievementCard, { IAchievementProps } from "../components/AchievementCard";
-import "../styles/pages.css"
+import AchievementCard from "../components/AchievementCard";
+import "../styles/pages.css";
+import { IAchievement, IAchievementType } from "../interface/AchievementInterface";
 
 
 export default function AchievementList() {
-    const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}achievement`, fetcher);
+    const achievements = useSWR(`${import.meta.env.VITE_APP}achievement`, fetcher);
+    const achievementTypes = useSWR(`${import.meta.env.VITE_APP}achievementType`, fetcher);
+    const [ filter, setFilter ] = useState("0");
 
-    if (error) return <div>failed to load </div>
-    if (!data) return <div>loading...</div>
+    if (achievements.error) return <div>failed to load </div>
+    if (!achievements.data) return <div>loading...</div>
+
+    if (achievementTypes.error) return <div>sada</div>
+    if (!achievementTypes.data) return <div>asda</div>
+
 
     return (
         <div className="achievement-list">
@@ -24,7 +31,15 @@ export default function AchievementList() {
                     <li>Filtering of the achievements</li>
                 </ul>
             </div>
-                {data.data.map((achievement: IAchievementProps, index: string) => <AchievementCard key={index} {...achievement} refresh={mutate} />)}
+            <select onChange={(e) => setFilter(e.target.value)}>
+                <option value={0} key={0}>-- Filter Achievements --</option>
+                {achievementTypes.data.data.map((achievementType: IAchievementType) => 
+                    <option value={achievementType.id}>{achievementType.name}</option>
+                )}
+            </select>
+            {achievements.data.data
+                .filter((achievement: IAchievement) => filter === "0" || achievement.achievementType.id === filter)
+                .map((achievement: IAchievement, index: number) => <AchievementCard key={index} {...achievement} refresh={achievements.mutate} />)}
         </div>
     )
 };
