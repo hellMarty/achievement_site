@@ -8,15 +8,24 @@ datasource db {
 }
 
 model Achievement {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  option      String
-  createdAt   DateTime @default(now())
-  deletedAt   DateTime?
+  id       			String       	@id @default(uuid())
+  title           	String
+  description     	String
+  achievementType 	AchievementType	@relation(fields: [achievementTypeId], references: [id])
+  achievementTypeId	String
+  createdAt       	DateTime    	@default(now())
+  deletedAt       	DateTime?
 }
 
 model User {
-  id   String @id @default(uuid())
-  name String
+  id   	String	@id @default(uuid())
+  name 	String
 }
+
+model AchievementType {
+  id    		String		@id @default(uuid())
+  order     Int
+  name   		String
+  achievements 	Achievement[]
+}
+
