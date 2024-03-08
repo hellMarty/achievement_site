@@ -4,6 +4,8 @@ export interface IAchievement {
     description: string,
     achievementType: IAchievementType,
     createdAt: string,
+    achievedAt: string,
+    achievedBy: string,
     refresh: () => void,
 }
 
