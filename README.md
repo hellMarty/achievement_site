@@ -30,3 +30,5 @@ SQLite is used for the database.
 
 For simplifying work with the database Prisma is used (https://www.prisma.io/).
 
+Create a database by executing `npx prisma migrate dev --name init`
+
