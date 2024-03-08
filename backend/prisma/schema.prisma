@@ -15,11 +15,15 @@ model Achievement {
   achievementTypeId	String
   createdAt       	DateTime    	@default(now())
   deletedAt       	DateTime?
+  achievedBy        User?           @relation(fields: [achievedById], references: [id])
+  achievedById      String?      
+  achievedAt        DateTime?
 }
 
 model User {
-  id   	String	@id @default(uuid())
-  name 	String
+  id   	        String	@id @default(uuid())
+  name 	        String
+  achievements  Achievement[]
 }
 
 model AchievementType {

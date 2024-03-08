@@ -1,14 +1,15 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
+import MainNavbar from "./components/MainNavbar";
 import About from "./pages/About";
 import AchievementList from "./pages/AchievementList";
 import Contact from "./pages/Contact";
 import CreateAchievement from "./pages/CreateAchievement";
-import HomePage from "./pages/HomePage";
-import Profile from "./pages/Profile";
-import MainNavbar from "./components/MainNavbar";
 import ErrorPage from "./pages/ErrorPage";
-import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import OpenAchievements from "./pages/OpenAchievements";
+import Profile from "./pages/Profile";
 import "./styles/pages.css";
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/achievement-list" element={<AchievementList />} />
+                    <Route path="/achievement-open" element={<OpenAchievements />} />
                     <Route path="/achievement-new" element={<CreateAchievement />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/profile" element={<Profile />} />

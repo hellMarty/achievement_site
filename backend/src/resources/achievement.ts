@@ -2,7 +2,55 @@ import prisma from '../client';
 import { Request, Response } from 'express';
 
 /**
- * Create new achievement 
+ *  Get all achievements (except deleted) 
+ */
+export const getAll = async (req: Request, res: Response) => {
+    const achievements = await prisma.achievement.findMany({
+        select: {
+            id: true,
+            title: true,
+            description: true,
+            achievementType: true,
+            createdAt: true,
+            achievedAt: true,
+            achievedBy: true,
+        },
+        where: {
+            deletedAt: null,
+        },
+    });
+
+    return res.send({
+        status: 'success',
+        data: achievements,
+    })
+}
+
+/**
+ *  Get achievements by its type (for now not used)
+ */
+export const getForType = async (req: Request, res: Response) => {
+    const achievementTypeId = req.params.id;
+
+    const achievements = await prisma.achievement.findMany({
+        select: {
+            id: true,
+            title: true,
+            description: true,
+        },
+        where: {
+            deletedAt: null,
+            achievementTypeId: achievementTypeId,
+        }
+    })
+    res.send({
+        status: "success",
+        data: achievements,
+    })
+}
+
+/**
+ *  Create new achievement 
  */
 export const create = async (req: Request, res: Response) => {
     const { title, description, achievementTypeId } = req.body;
@@ -36,59 +84,41 @@ export const create = async (req: Request, res: Response) => {
 };
 
 /**
- * Get all achievements (except deleted) 
+ *  Gain achievement. Set achievedAt and achievedBy
  */
-export const getAll = async (req: Request, res: Response) => {
-    const achievements = await prisma.achievement.findMany({
-        select: {
-            id: true,
-            title: true,
-            description: true,
-            achievementType: true,
-            createdAt: true,
-        },
+export const gain = async (req: Request, res: Response) => {
+    const achievementId = req.params.achievementId;
+
+    if (!findAchievement(achievementId)) {
+        return res.send(404).send({
+            status: 'error',
+            data: {},
+            message: 'Message not found',
+        })
+    }
+
+    const achivement = await prisma.achievement.update({
         where: {
-            deletedAt: null,
+            id: achievementId,
+        },
+        data: {
+            achievedAt: new Date(),
         },
     });
 
     return res.send({
-        status: 'success',
-        data: achievements,
-    })
-}
-
-export const getForType = async (req: Request, res: Response) => {
-    const achievementTypeId = req.params.id;
-
-    const achievements = await prisma.achievement.findMany({
-        select: {
-            id: true,
-            title: true,
-            description: true,
-        },
-        where: {
-            deletedAt: null,
-            achievementTypeId: achievementTypeId,
-        }
-    })
-    res.send({
         status: "success",
-        data: achievements,
+        data: achivement,
     })
 }
 
-
+/**
+ *  Remove achievement
+ */
 export const remove = async (req: Request, res: Response) => {
-    const achievementId = req.params.id;
-    
-    const achievement = await prisma.achievement.findUnique({
-        where: {
-            id: achievementId,
-        },
-    });
+    const achievementId = req.params.achievementId;
 
-    if (!achievement) {
+    if (!findAchievement(achievementId)) {
         return res.send(404).send({
             status: 'error',
             data: {},
@@ -109,4 +139,13 @@ export const remove = async (req: Request, res: Response) => {
         stauts: 'success',
         data: removedAchievement,
     })
+}
+ 
+
+const findAchievement = async (achievementId: string) => {
+    return await prisma.achievement.findUnique({
+        where: {
+            id: achievementId,
+        },
+    });
 }

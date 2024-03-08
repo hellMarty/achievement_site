@@ -12,6 +12,7 @@ export default function MainNavbar() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Nav className="me-auto">
                         <Link className="nav link" to="/achievement-list">Achievements</Link>
+                        <Link className="nav link" to="/achievement-open">Open Achievements</Link>
                         <Link className="nav link" to="/achievement-new">Create Achievement</Link>
                         <Link className="nav link" to="/profile">Sign In</Link>
                     </Nav>

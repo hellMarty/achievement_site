@@ -8,10 +8,11 @@ const port = process.env.PORT ?? 4000;
 api.use(express.json());
 api.use(cors());
 
-api.post("/achievement", achievement.create);
 api.get("/achievement", achievement.getAll);
 api.get("/achievement/:achievementTypeId", achievement.getForType);
-api.delete("/achievement/:id", achievement.remove);
+api.post("/achievement", achievement.create);
+api.post("/achievement/:achievementId", achievement.gain);
+api.delete("/achievement/:achievementId", achievement.remove);
 
 api.get("/achievementType", achievementType.getAll);
 

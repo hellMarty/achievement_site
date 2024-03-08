@@ -22,7 +22,12 @@ async function main() {
             }
         })
     })
-}
 
+    await prisma.user.create({
+        data: {
+            name: "Administrator",
+        }
+    })
+}
 
 main();
