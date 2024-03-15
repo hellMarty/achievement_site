@@ -13,13 +13,13 @@ export default function MainNavbar() {
     return (
         <Navbar expand="lg" className="bg-body-secondary">
             <div className="navbar">
-                <Navbar.Brand><Link className="nav brand" to="/">Achievement Site</Link></Navbar.Brand>
+                <Navbar.Brand><Link className="brand" to="/">Achievement Site</Link></Navbar.Brand>
                 <Nav className="main-nav">
-                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-list")}`} to="/achievement-list">Achievements</Link>
-                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-open")}`} to="/achievement-open">Open Achievements</Link>
-                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-new")}`} to="/achievement-new">Create Achievement</Link>
+                    <Link className={`link ${isLinkActive(pathname, "/achievement-list")}`} to="/achievement-list">Achievements</Link>
+                    <Link className={`link ${isLinkActive(pathname, "/achievement-open")}`} to="/achievement-open">Open Achievements</Link>
+                    <Link className={`link ${isLinkActive(pathname, "/achievement-new")}`} to="/achievement-new">Create Achievement</Link>
                 </Nav>
-                <Link className={`nav link ${isLinkActive(pathname, "/profile")}`} to="/profile">Sign In</Link>
+                <Link className={`link ${isLinkActive(pathname, "/profile")}`} to="/profile">Sign In</Link>
             </div>
         </Navbar>
     );
