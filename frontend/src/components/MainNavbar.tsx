@@ -1,23 +1,26 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../styles/components.css";
 
 export default function MainNavbar() {
+    const { pathname } = useLocation();
+
+    function isLinkActive(pathname: string, linkTo: string): string {
+        return pathname === linkTo ? " bg-body-tertiary" : ""
+    }
+
     return (
-        <div className="navbar">
-            <Navbar expand="lg" className="bg-body-tertiary">
-                <Container>
-                    <Navbar.Brand><Link className="nav link" to="/">Achievement Site</Link></Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Nav className="me-auto">
-                        <Link className="nav link" to="/achievement-list">Achievements</Link>
-                        <Link className="nav link" to="/achievement-open">Open Achievements</Link>
-                        <Link className="nav link" to="/achievement-new">Create Achievement</Link>
-                        <Link className="nav link" to="/profile">Sign In</Link>
-                    </Nav>
-                </Container>
-            </Navbar>
-        </div>
+        <Navbar expand="lg" className="bg-body-secondary">
+            <div className="navbar">
+                <Navbar.Brand><Link className="nav brand" to="/">Achievement Site</Link></Navbar.Brand>
+                <Nav className="main-nav">
+                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-list")}`} to="/achievement-list">Achievements</Link>
+                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-open")}`} to="/achievement-open">Open Achievements</Link>
+                    <Link className={`nav link ${isLinkActive(pathname, "/achievement-new")}`} to="/achievement-new">Create Achievement</Link>
+                </Nav>
+                <Link className={`nav link ${isLinkActive(pathname, "/profile")}`} to="/profile">Sign In</Link>
+            </div>
+        </Navbar>
     );
 };
