@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import React from "react";
-import { Button } from "react-bootstrap";
 import { IAchievement } from "../interface/AchievementInterface";
 import "../styles/components.css";
 
@@ -11,22 +10,23 @@ export default function AchievementCard(achievementProps: IAchievement) {
                 <img className="achievement-card__image" src="../icons/image.svg" />
             </div>
             <div className="achievement-card__info">
-                <h1>Achievement!</h1>
-                <h3>Title: {achievementProps.title}</h3>
-                <div>Desc: {achievementProps.description}</div>
-                <div>Type: {achievementProps.achievementType.name}</div>
+                <div>
+                    <div className="achievement-card__title">{achievementProps.title}</div>
+                    <div className="achievement-card__desc">{achievementProps.description}</div>
+                    <div className="achievement-card__type">Type: {achievementProps.achievementType.name}</div>
+                </div>
                 <div className="achievement-card__footer">
                     <div className="achievement-card__date" >Date: {format(achievementProps.createdAt, "MM/dd/yyyy HH:mm")}</div>
                     <div>
-                        {achievementProps.achievedAt === null ? 
-                        <Button className="achievement-card__button" onClick={() => gainAchievement(achievementProps)}>
-                            GAIN
-                        </Button> 
-                        :
-                        null}
-                        <Button className="achievement-card__button" onClick={() => deleteMessage(achievementProps)}>
+                        {achievementProps.achievedAt === null ?
+                            <button className="achievement-card__button" onClick={() => gainAchievement(achievementProps)}>
+                                GAIN
+                            </button>
+                            :
+                            null}
+                        <button className="achievement-card__button" onClick={() => deleteMessage(achievementProps)}>
                             Remove
-                        </Button>
+                        </button>
                     </div>
                 </div>
             </div>
