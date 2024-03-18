@@ -22,8 +22,8 @@ export default function CreateAchievement() {
             <h1>Create new Achievement</h1>
             <h3>TODOs:</h3>
             <ul>
-                <li>Create template for the achievement</li>
                 <li>Modify template based on the inputs</li>
+                <li>Make some input limitations e.g. max 500 chars</li>
             </ul>
             {renderCreateForm({ form, setForm, data })}
         </div>

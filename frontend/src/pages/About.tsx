@@ -9,7 +9,10 @@ export default function About() {
             <h3>TODOs:</h3>
             <ul>
                 <li>Fill some standard info</li>
-            </ul> 
+            </ul>
+            <img alt="Inspirational World of Warcraft Image - Achievements"
+                src="public/inspiration.png"
+                style={{height: "800px"}}/>
         </div>
     )
 }
