@@ -20,6 +20,8 @@ export default function OpenAchievements() {
     if (achievementTypes.error) return <div>failed to load</div>
     if (!achievementTypes.data) return <div>loading...</div>
 
+    console.log("achievements", achievements.data)
+
     return (
         <div className="achievement-list">
             <div>

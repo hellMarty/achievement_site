@@ -21,6 +21,38 @@
     padding-left: 1.5rem;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 7rem;
+    margin-right: 0.5rem;
+}
+
+.dropdown_button {
+    padding: 1.5rem;
+    width: inherit;
+    border: none;
+    background: none;
+}
+
+.dropdown_content {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+    position: absolute;
+    z-index: 5;
+    background: white;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.input_text {
+    width: 30rem;
+}
+
+.active_btn {
+    background-color: white;
+}
+
 .link:hover {
     color: gray;
 }

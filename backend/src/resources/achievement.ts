@@ -90,7 +90,7 @@ export const gain = async (req: Request, res: Response) => {
     const achievementId = req.params.achievementId;
 
     if (!findAchievement(achievementId)) {
-        return res.send(404).send({
+        return res.status(404).send({
             status: 'error',
             data: {},
             message: 'Message not found',
@@ -119,7 +119,7 @@ export const remove = async (req: Request, res: Response) => {
     const achievementId = req.params.achievementId;
 
     if (!findAchievement(achievementId)) {
-        return res.send(404).send({
+        return res.status(404).send({
             status: 'error',
             data: {},
             message: 'Message not found',

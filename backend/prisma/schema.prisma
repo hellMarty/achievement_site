@@ -33,3 +33,11 @@ model AchievementType {
   achievements 	Achievement[]
 }
 
+model Theme {
+  id          String      @id @default(uuid())
+  name        String
+  active      Boolean
+  deletedAt   DateTime?
+  lastActive  DateTime?
+  cssFile     String    @default("")
+}

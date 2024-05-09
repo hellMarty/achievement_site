@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 export default function Profile() {
     return (
         <div>
@@ -23,7 +21,6 @@ export default function Profile() {
             </div>
             <div className="profile__info">
                 <div className="profile__name">UserName</div>
-                <div className="profile__slug">#slug</div>
             </div>
         </div>
     )

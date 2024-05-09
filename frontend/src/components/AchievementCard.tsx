@@ -4,6 +4,7 @@ import { IAchievement } from "../interface/AchievementInterface";
 import "../styles/components.css";
 
 export default function AchievementCard(achievementProps: IAchievement) {
+    console.log(achievementProps)
     return (
         <div className="achievement-card">
             <div>
