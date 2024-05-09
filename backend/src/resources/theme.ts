@@ -1,15 +1,21 @@
-import prisma from '../client';
 import { Request, Response } from 'express';
+import prisma from '../client';
 
-const DEFAULT_THEME_ID="b2327c39-392e-4b91-8f52-f99776952e2e"
+const DEFAULT_THEME_ID = "b2327c39-392e-4b91-8f52-f99776952e2e"
 
-
+/**
+ * Get Active Theme
+ * 
+ * @param req - Request contains: none
+ * @param res - Response
+ * @returns - Active Theme (Default theme is active by Default)
+ */
 export const getActive = async (req: Request, res: Response) => {
     const theme = await prisma.theme.findFirst({
         select: {
             id: true,
             name: true,
-            cssFile: true,
+            jsonCSS: true,
         },
         where: {
             active: true
@@ -22,6 +28,13 @@ export const getActive = async (req: Request, res: Response) => {
     });
 };
 
+/**
+ * Get All Themes
+ * 
+ * @param req - Request contains: none
+ * @param res - Response
+ * @returns - All Themes
+ */
 export const getAll = async (req: Request, res: Response) => {
     const theme = await prisma.theme.findMany({
         select: {
@@ -29,7 +42,7 @@ export const getAll = async (req: Request, res: Response) => {
             name: true,
             active: true,
             lastActive: true,
-            cssFile: true,
+            jsonCSS: true,
         },
         where: {
             deletedAt: null,
@@ -42,8 +55,15 @@ export const getAll = async (req: Request, res: Response) => {
     });
 };
 
+/**
+ * Set desired Theme as Active, set all others as Inactive
+ * 
+ * @param req - Request contains: Theme Id
+ * @param res - Response
+ * @returns - Returns Activated Theme
+ */
 export const setAsActive = async (req: Request, res: Response) => {
-    const id = req.params.themeId; 
+    const id = req.params.themeId;
 
     await prisma.theme.updateMany({
         where: {
@@ -70,12 +90,19 @@ export const setAsActive = async (req: Request, res: Response) => {
     });
 }
 
+/**
+ * Create new theme
+ * 
+ * @param req - Request contains: Theme Name, Active (Future plans, currently set as False)
+ * @param res - Response
+ * @returns - Created Theme
+ */
 export const create = async (req: Request, res: Response) => {
     const name = req.body.name;
     let active = req.body.active;
-    
-    if (active) { 
-        active = false; 
+
+    if (active) {
+        active = false;
     }
 
     const theme = await prisma.theme.create({
@@ -91,6 +118,13 @@ export const create = async (req: Request, res: Response) => {
     });
 }
 
+/**
+ * Remove Theme, set DeletedAt for the Theme. 
+ * 
+ * @param req - Request contains: ThemeId
+ * @param res - Response
+ * @returns - Deleted Theme
+ */
 export const remove = async (req: Request, res: Response) => {
     const themeId = req.params.themeId;
 
@@ -144,25 +178,27 @@ export const remove = async (req: Request, res: Response) => {
     });
 }
 
-export const replaceCssFile = async (req: Request, res: Response) => {
+/**
+ * Update CSS file in the theme. CSS is stored in the form of JSON
+ * 
+ * @param req - Request contains: Theme Id, CSS in JSON
+ * @param res - Response
+ * @returns - Updated Theme
+ */
+export const updateJsonCSS = async (req: Request, res: Response) => {
     const themeId = req.params.themeId;
-    const cssFile = req.body.cssFile;
+    const { jsonCSS } = req.body
 
-    const theme = await prisma.theme.findUnique({
+    const theme = await prisma.theme.update({
         where: {
             id: themeId,
         },
+        data: {
+            jsonCSS: jsonCSS,
+        },
     });
 
-    if (!theme) {
-        return res.status(404).send({
-            status: 'error',
-            data: {},
-            message: 'Theme not found!',
-        });
-    };
-
-    // TODO: uncomment once the default theme is set up! 
+    // TODO: uncomment once the default theme is set up! Add some admin control (only one with rights can update it)
     /*
     if (theme.id === DEFAULT_THEME_ID) {
         return res.status(400).send({
@@ -173,46 +209,20 @@ export const replaceCssFile = async (req: Request, res: Response) => {
     };
     */
 
-    const updatedTheme = await prisma.theme.update({
-        where: {
-            id: themeId,
-        },
-        data: {
-            cssFile: cssFile,
-        },
-    });
-
-    return res.send({
-        status: 'success',
-        data: updatedTheme,
-    });
-};
-
-export const updateCssFile = async (req: Request, res: Response) => {
-    const themeId = req.params.themeId;
-    const { component } = req.body
-    
-    
-    console.log(component);
-
-    const theme = await prisma.theme.update({
-        where: {
-            id: themeId,
-        },
-        data: {
-            cssFile: component,
-        },
-    });
-
     return res.send({
         status: 'success',
         data: theme,
     });
-
 }
 
-
-export const getCssFile = async (req: Request, res: Response) => {
+/**
+ * Returns the CSS in Json for desired Theme
+ * 
+ * @param req - Request contains: Theme Id
+ * @param res - Response
+ * @returns - CSS in form of Json
+ */
+export const getJsonCSS = async (req: Request, res: Response) => {
     const themeId = req.params.themeId;
 
     const theme = await prisma.theme.findUnique({
@@ -231,6 +241,6 @@ export const getCssFile = async (req: Request, res: Response) => {
 
     return res.send({
         status: 'success',
-        data: theme.cssFile,
+        data: theme.jsonCSS,
     });
 };

@@ -1,14 +1,9 @@
-import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import useSWR from "swr";
-import { IAchievementType } from "../interface/AchievementInterface";
+import { IAchievementTypeProps } from "../interface/AchievementInterface";
+import { IAchievementForm } from "../interface/FormInterface";
 import fetcher from "../models/fetcher";
-
-interface IForm {
-    title: string,
-    description: string,
-    achievementTypeId: string,
-}
 
 export default function CreateAchievement() {
     const [form, setForm] = useState({ achievementTypeId: "0", title: "", description: "" })
@@ -30,7 +25,7 @@ export default function CreateAchievement() {
     )
 };
 
-const renderCreateForm = (props: { form: IForm; setForm: (formData: IForm) => void; data: { _: string, data: IAchievementType[] } }) => {
+const renderCreateForm = (props: { form: IAchievementForm; setForm: (formData: IAchievementForm) => void; data: { _: string, data: IAchievementTypeProps[] } }) => {
     return (
         <div>
             <Form>
@@ -50,8 +45,8 @@ const renderCreateForm = (props: { form: IForm; setForm: (formData: IForm) => vo
                     <Form.Select value={props.form.achievementTypeId}
                         onChange={(e) => props.setForm({ ...props.form, achievementTypeId: e.target.value })}>
                         <option value="0">-- Select field of Achievement --</option>
-                        
-                        {props.data.data.map((opt: IAchievementType, index: number) => {
+
+                        {props.data.data.map((opt: IAchievementTypeProps, index: number) => {
                             return (
                                 <option value={opt.id} key={index}>{opt.name}</option>
                             )
@@ -69,8 +64,8 @@ const renderCreateForm = (props: { form: IForm; setForm: (formData: IForm) => vo
     )
 };
 
-const submitForm = (props: { form: IForm; setForm: (arg: IForm) => void; }) => {
-    fetch(`${import.meta.env.VITE_APP}achievement`, {
+const submitForm = async (props: { form: IAchievementForm; setForm: (arg: IAchievementForm) => void; }) => {
+    await fetch(`${import.meta.env.VITE_APP}achievement`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

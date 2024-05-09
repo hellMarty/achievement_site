@@ -3,7 +3,7 @@ import useSWR from "swr";
 import fetcher from "../models/fetcher";
 import AchievementCard from "../components/AchievementCard";
 import "../styles/pages.css";
-import { IAchievement, IAchievementType } from "../interface/AchievementInterface";
+import { IAchievementProps, IAchievementTypeProps } from "../interface/AchievementInterface";
 
 
 /* DUPLICATION: This page is moreover same as AchievementList.tsx, 
@@ -36,13 +36,13 @@ export default function OpenAchievements() {
             </div>
             <select onChange={(e) => setFilter(e.target.value)}>
                 <option value={0} key={0}>-- Filter Achievements --</option>
-                {achievementTypes.data.data.map((achievementType: IAchievementType, index: number) => 
+                {achievementTypes.data.data.map((achievementType: IAchievementTypeProps, index: number) => 
                     <option value={achievementType.id} key={index}>{achievementType.name}</option>
                 )}
             </select>
             {achievements.data.data
-                .filter((achievement: IAchievement) => (filter === "0" || achievement.achievementType.id === filter) && achievement.achievedAt === null )
-                .map((achievement: IAchievement, index: number) => <AchievementCard key={index} {...achievement} refresh={achievements.mutate} />)}
+                .filter((achievement: IAchievementProps) => (filter === "0" || achievement.achievementType.id === filter) && achievement.achievedAt === null )
+                .map((achievement: IAchievementProps, index: number) => <AchievementCard key={index} {...achievement} refresh={achievements.mutate} />)}
         </div>
     )
 };

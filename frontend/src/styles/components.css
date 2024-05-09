@@ -49,6 +49,11 @@
     width: 30rem;
 }
 
+.input_invalid, .input_invalid:focus {
+    outline: none;
+    border: 2px solid red;
+}
+
 .active_btn {
     background-color: white;
 }

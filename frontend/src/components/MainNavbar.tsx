@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Dropdown, DropdownButton, Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/components.css";
 import "../styles/external.css";
@@ -23,7 +23,7 @@ export default function MainNavbar() {
                     <Link className={`link ${isLinkActive(pathname, "/themes")}`} onClick={() => setShowDropdown(false)} to="/themes">Themes</Link>
                 </Nav>
                 <div className="dropdown">
-                    <button onClick={() => setShowDropdown(!showDropdown)} className={`${showDropdown? "active_btn" : ""} dropdown_button`}>Profile</button>
+                    <button onClick={() => setShowDropdown(!showDropdown)} className={`${showDropdown ? "active_btn" : ""} dropdown_button`}>Profile</button>
                     {showDropdown ?
                         <div className="dropdown_content">
                             <Link className={`link ${isLinkActive(pathname, "/editor")}`} onClick={() => setShowDropdown(false)} to="/editor">Editor</Link>
@@ -35,6 +35,5 @@ export default function MainNavbar() {
                 </div>
             </div>
         </Navbar>
-
     );
 };

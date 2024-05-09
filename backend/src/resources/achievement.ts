@@ -1,8 +1,12 @@
-import prisma from '../client';
 import { Request, Response } from 'express';
+import prisma from '../client';
 
 /**
- *  Get all achievements (except deleted) 
+ * Get all achievements
+ * 
+ * @param req - Request contains: none
+ * @param res - Response
+ * @returns - All Achievements (except deleted)
  */
 export const getAll = async (req: Request, res: Response) => {
     const achievements = await prisma.achievement.findMany({
@@ -27,7 +31,11 @@ export const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- *  Get achievements by its type (for now not used)
+ * Get Achievements by its type
+ * 
+ * @param req - Request contains: Achievement Type Id
+ * @param res - Response
+ * @returns - Achievements with certain Type
  */
 export const getForType = async (req: Request, res: Response) => {
     const achievementTypeId = req.params.id;
@@ -43,14 +51,18 @@ export const getForType = async (req: Request, res: Response) => {
             achievementTypeId: achievementTypeId,
         }
     })
-    res.send({
+    return res.send({
         status: "success",
         data: achievements,
     })
 }
 
 /**
- *  Create new achievement 
+ * Create new achievement 
+ * 
+ * @param req - Request contains: Achievement Title, Description, and Achievement Type
+ * @param res - Response
+ * @returns - Created Achievement
  */
 export const create = async (req: Request, res: Response) => {
     const { title, description, achievementTypeId } = req.body;
@@ -84,7 +96,11 @@ export const create = async (req: Request, res: Response) => {
 };
 
 /**
- *  Gain achievement. Set achievedAt and achievedBy
+ * Gain achievement. Set achievedAt and achievedBy
+ * 
+ * @param req - Request contains: Achievement Id
+ * @param res - Response
+ * @returns - Obtained Achievement if found
  */
 export const gain = async (req: Request, res: Response) => {
     const achievementId = req.params.achievementId;
@@ -113,7 +129,11 @@ export const gain = async (req: Request, res: Response) => {
 }
 
 /**
- *  Remove achievement
+ * Remove Achievement, set DeletedAt for selected Achievement
+ * 
+ * @param req - Request contains: Achievement Id
+ * @param res - Response
+ * @returns - Removed achievement if found
  */
 export const remove = async (req: Request, res: Response) => {
     const achievementId = req.params.achievementId;
@@ -140,8 +160,13 @@ export const remove = async (req: Request, res: Response) => {
         data: removedAchievement,
     })
 }
- 
 
+/**
+ * Helper function that finds unique Achievement by it's ID
+ * 
+ * @param achievementId - Achievement ID
+ * @returns - Achievement
+ */
 const findAchievement = async (achievementId: string) => {
     return await prisma.achievement.findUnique({
         where: {

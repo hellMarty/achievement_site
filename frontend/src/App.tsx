@@ -17,13 +17,11 @@ import Themes from "./pages/Themes";
 import "./styles/pages.css";
 
 export default function App() {
-    const {data, error, mutate} = useSWR(`${import.meta.env.VITE_APP}theme/active`, fetcher);
+    // Initial Theme fetch. Should set the theme for the App
+    const {data, error} = useSWR(`${import.meta.env.VITE_APP}theme/active`, fetcher);
 
     if (error) return <div>failed to load </div>
     if (!data) return <div>loading...</div>
-
-    console.log("active css: ", data.data.name, data.data.cssFile, JSON.parse(data.data.cssFile), JSON.parse(data.data.cssFile).testing_div);
-
     
     return (
         <div className="app">
@@ -36,7 +34,7 @@ export default function App() {
                     <Route path="/achievement-list" element={<AchievementList />} />
                     <Route path="/achievement-open" element={<OpenAchievements />} />
                     <Route path="/achievement-new" element={<CreateAchievement />} />
-                    <Route path="/themes" element={<Themes action={mutate}/>} />
+                    <Route path="/themes" element={<Themes />} />
                     <Route path="/editor" element={<Editor />} />
 
                     <Route path="/contact" element={<Contact />} />

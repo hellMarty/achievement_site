@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+import { IThemeProps } from "../interface/ThemeInterface";
 import fetcher from "../models/fetcher";
 
-export default function Themes(props: any) {
+export default function Themes() {
     const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}theme`, fetcher);
 
     const [style, setStyle] = useState("");
 
     useEffect(() => {
         if (data) {
-            setStyle(data.data.filter((theme: any) => theme.active)[0].cssFile)
+            setStyle(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS)
         }
     }, [data])
 
@@ -19,26 +20,35 @@ export default function Themes(props: any) {
 
     async function changeTheme(themeId: string) {
         await fetch(`${import.meta.env.VITE_APP}theme/${themeId}`, {
-            method: 'POST',
+            method: 'PUT',
         });
+        console.log(data.data)
 
         mutate();
-        props.action();
     }
 
     async function submitChanges() {
-        await fetch(`${import.meta.env.VITE_APP}theme/${data.data.filter(theme => theme.active)[0].id}/css`, {
+        await fetch(`${import.meta.env.VITE_APP}theme/${data.data.filter((theme: IThemeProps) => theme.active)[0].id}/css`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                'component': style
+                'jsonCSS': style
             })
         });
 
-        props.action();
         mutate();
+    }
+
+    function tryParse(cssInput: string) {
+        try {
+            JSON.parse(cssInput);
+            console.log("success", JSON.parse(cssInput))
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
 
     return (
@@ -68,17 +78,18 @@ export default function Themes(props: any) {
                     {data.data.map((theme: any) => <li key={theme.id}><a onClick={() => changeTheme(theme.id)}>{theme.name}{theme.active ? " (Active)" : ""}</a></li>)}
                 </ul>
             </div>
-            <div style={JSON.parse(data.data.filter(theme => theme.active)[0].cssFile).testing_div}>
+            <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div : {} ): {}}>
                 Stored Text Theme
             </div>
-            <div style={style ? JSON.parse(style).testing_div : {}}>
+            <div style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
                 Live Preview Text theme
             </div>
             <div>
                 <label>Current CSS: </label>
-                <input className="input_text" type="text" value={style} onChange={e => setStyle(e.target.value)} />
+                <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={style} onChange={e => setStyle(e.target.value)} />
                 <input type="submit" onClick={() => submitChanges()}/>
             </div>
+            {!tryParse(style) ? <div>Input is in invalid format</div>: ""}
         </div>
     )
 };

@@ -39,5 +39,5 @@ model Theme {
   active      Boolean
   deletedAt   DateTime?
   lastActive  DateTime?
-  cssFile     String    @default("")
+  jsonCSS     String    @default("")
 }

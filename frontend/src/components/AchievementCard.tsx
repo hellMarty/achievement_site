@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import React from "react";
-import { IAchievement } from "../interface/AchievementInterface";
+import { IAchievementProps } from "../interface/AchievementInterface";
 import "../styles/components.css";
 
-export default function AchievementCard(achievementProps: IAchievement) {
+export default function AchievementCard(achievementProps: IAchievementProps) {
     console.log(achievementProps)
     return (
         <div className="achievement-card">
@@ -35,7 +35,7 @@ export default function AchievementCard(achievementProps: IAchievement) {
     )
 };
 
-const deleteMessage = async (achievementProps: IAchievement) => {
+const deleteMessage = async (achievementProps: IAchievementProps) => {
     await fetch(`${import.meta.env.VITE_APP}achievement/${achievementProps.id}`, {
         method: 'DELETE'
     });
@@ -43,9 +43,9 @@ const deleteMessage = async (achievementProps: IAchievement) => {
     achievementProps.refresh();
 };
 
-const gainAchievement = async (achievementProps: IAchievement) => {
+const gainAchievement = async (achievementProps: IAchievementProps) => {
     await fetch(`${import.meta.env.VITE_APP}achievement/${achievementProps.id}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
