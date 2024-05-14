@@ -19,15 +19,40 @@ async function main() {
                         name: achievementType,
                     },
                 });
-            }
-        })
-    })
+            };
+        });
+    });
 
-    await prisma.user.create({
-        data: {
+    const admin = await prisma.user.findFirst({
+        where: {
             name: "Administrator",
-        }
-    })
+        },
+    });
+    
+    if (!admin) {
+        console.log("create Administrator")
+        await prisma.user.create({
+            data: {
+                name: "Administrator",
+            },
+        });
+    };
+    
+    const defaultTheme = await prisma.theme.findFirst({
+        where: {
+            name: "Default Theme"
+        },
+    });
+
+    if (!defaultTheme) {
+        console.log("create Default Theme")
+        await prisma.theme.create({
+            data: {
+                name: "Default Theme",
+                active: true,
+            },
+        });
+    };
 }
 
 main();
