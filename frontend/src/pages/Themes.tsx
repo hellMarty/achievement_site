@@ -7,7 +7,8 @@ export default function Themes() {
     const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}theme`, fetcher);
 
     const [style, setStyle] = useState("");
-    const [newThemeName, setNewThemeName] = useState("")
+    const [activeClass, setActiveClass] = useState("");
+    const [newThemeName, setNewThemeName] = useState("");
 
     useEffect(() => {
         if (data) {
@@ -124,7 +125,7 @@ export default function Themes() {
                 <div style={style ? (tryParse(style) ? JSON.parse(style).testing_div_2 : {}) : {}}>
                     Live Preview Text theme: Class: testing_div_2
                 </div>
-                <button>Edit</button>
+                <button onClick={}>Edit</button>
             </div>
 
 
