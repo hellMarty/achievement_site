@@ -7,6 +7,8 @@ export default function Themes() {
     const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}theme`, fetcher);
 
     const [style, setStyle] = useState("");
+    const [editComponent, setEditComponent] = useState("");
+    const [hover, setHover] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -39,6 +41,7 @@ export default function Themes() {
         });
 
         mutate();
+        setEditComponent("");
     }
 
     function tryParse(cssInput: string) {
@@ -78,18 +81,23 @@ export default function Themes() {
                     {data.data.map((theme: any) => <li key={theme.id}><a onClick={() => changeTheme(theme.id)}>{theme.name}{theme.active ? " (Active)" : ""}</a></li>)}
                 </ul>
             </div>
-            <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div : {} ): {}}>
-                Stored Text Theme
-            </div>
-            <div style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
-                Live Preview Text theme
-            </div>
-            <div>
-                <label>Current CSS: </label>
-                <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={style} onChange={e => setStyle(e.target.value)} />
-                <input type="submit" onClick={() => submitChanges()}/>
-            </div>
-            {!tryParse(style) ? <div>Input is in invalid format</div>: ""}
+                <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div : {}) : {}}>
+                    <span>Stored Text Theme</span>
+                </div>
+                <div className={`${hover ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
+                    <span>Live Preview Text theme</span>
+                </div>
+                <button className="edit_mark" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => setEditComponent("testing_div")}><img className="edit_mark-icon" src="/icons/gear.png" /></button>
+            {editComponent ?
+                <div>
+                    <label>Current CSS: </label>
+                    <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={style} onChange={e => setStyle(e.target.value)} />
+                    <input type="submit" onClick={() => submitChanges()} />
+                </div>
+                :
+                ""
+            }
+            {!tryParse(style) ? <div>Input is in invalid format</div> : ""}
         </div>
     )
 };

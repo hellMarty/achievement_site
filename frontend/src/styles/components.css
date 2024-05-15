@@ -54,6 +54,32 @@
     border: 2px solid red;
 }
 
+.edit_mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+    border-radius: 50%;
+    border: 0;
+    width: 1.3rem;
+    height: 1.3rem;
+    padding: 0;
+}
+
+.edit_mark-icon {
+    width: 70%;
+    height: 70%;
+}
+
+.live_preview {
+    display: flex;
+    flex-direction: row;
+}
+
+.hover_active {
+    border: 1px solid red;
+}
+
 .active_btn {
     background-color: white;
 }
