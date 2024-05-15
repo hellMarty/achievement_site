@@ -10,7 +10,7 @@ export default function Themes() {
     const [activeClass, setActiveClass] = useState("");
     const [newThemeName, setNewThemeName] = useState("");
     const [editComponent, setEditComponent] = useState("");
-    const [hover, setHover] = useState(false);
+    const [hover, setHover] = useState("");
 
     useEffect(() => {
         if (data) {
@@ -33,6 +33,7 @@ export default function Themes() {
     }
 
     async function submitChanges() {
+        console.log("style", style, editComponent)
         await fetch(`${import.meta.env.VITE_APP}theme/${data.data.filter((theme: IThemeProps) => theme.active)[0].id}/css`, {
             method: 'PUT',
             headers: {
@@ -113,32 +114,69 @@ export default function Themes() {
                 </ul>
             </div>
 
-            <div style={{"padding": "1rem", margin: "1rem", border: "1px solid black"}}>
+            <div style={{ "padding": "1rem", margin: "1rem", border: "1px solid black" }}>
                 <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div : {}) : {}}>
                     Stored Text Theme: Class testing_div
                 </div>
-                <div style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
+                <div className={`${hover === "testing_div" ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
                     Live Preview Text theme: Class: testing_div
                 </div>
+                <button className="edit_mark" onMouseEnter={() => setHover("testing_div")} onMouseLeave={() => setHover("")} 
+                    onClick={() => {
+                        if (!JSON.stringify(JSON.parse(style).testing_div)) {
+                            const parsedStyle = JSON.parse(style);
+                            parsedStyle.testing_div = {"":""}
+                            setStyle(JSON.stringify(parsedStyle))
+                        }
+                        setEditComponent("testing_div")
+                    }}>
+                    <img className="edit_mark-icon" src="/icons/gear.png" />
+                </button>
             </div>
 
-            <div style={{"padding": "1rem", margin: "1rem", border: "1px solid black"}}>
+            <div style={{ "padding": "1rem", margin: "1rem", border: "1px solid black" }}>
                 <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div_2 : {}) : {}}>
                     Stored Text Theme: Class testing_div_2
                 </div>
-                <div className={`${hover ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div_2 : {}) : {}}>
+                <div className={`${hover === "testing_div_2" ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div_2 : {}) : {}}>
                     Live Preview Text theme: Class: testing_div_2
                 </div>
-                <button className="edit_mark" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => setEditComponent("testing_div")}><img className="edit_mark-icon" src="/icons/gear.png" /></button>
+                <button className="edit_mark" onMouseEnter={() => setHover("testing_div_2")} onMouseLeave={() => setHover("")} 
+                    onClick={() => {
+                        if (!JSON.stringify(JSON.parse(style).testing_div_2)) {
+                            const parsedStyle = JSON.parse(style);
+                            parsedStyle.testing_div_2 = {"":""}
+                            setStyle(JSON.stringify(parsedStyle))
+                        }
+                        setEditComponent("testing_div_2");
+                    }}>
+                    <img className="edit_mark-icon" src="/icons/gear.png" />
+                </button>
             </div>
 
-                        {editComponent ?
-            <div>
-                <label>Current CSS: </label>
-                <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={tryParse(style) ? JSON.stringify(JSON.parse(style).testing_div) : style} onChange={e => setStyle(`{"testing_div": ${e.target.value}}`)} />
-                <input type="submit" disabled={!tryParse(style)} onClick={() => submitChanges()} />
-            </div>
-            :""}
+            {editComponent ?
+                <div>
+                    <label>Current CSS: </label>
+                    
+                    <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" 
+                        value={tryParse(style) ? (editComponent === "testing_div" ? JSON.stringify(JSON.parse(style).testing_div) : JSON.stringify(JSON.parse(style).testing_div_2)) : style} 
+                        onChange={e => {
+                            const parsedStyle = JSON.parse(style);
+                            if (editComponent === "testing_div") {
+                                parsedStyle.testing_div = JSON.parse(e.target.value);
+                            } else {
+                                parsedStyle.testing_div_2 = JSON.parse(e.target.value);
+                            }
+                            console.log(parsedStyle, style, JSON.stringify(parsedStyle));
+                            setStyle(JSON.stringify(parsedStyle));
+                        }} />
+                    
+                    <input type="submit" disabled={!tryParse(style)} onClick={() => {
+                        console.log(style, editComponent)
+                        submitChanges();
+                    }} />
+                </div>
+                : ""}
             {!tryParse(style) ? <div>Input is in invalid format</div> : ""}
 
 
