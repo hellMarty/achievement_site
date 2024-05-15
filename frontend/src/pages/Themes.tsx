@@ -7,24 +7,27 @@ export default function Themes() {
     const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}theme`, fetcher);
 
     const [style, setStyle] = useState("");
+    const [activeClass, setActiveClass] = useState("");
+    const [newThemeName, setNewThemeName] = useState("");
     const [editComponent, setEditComponent] = useState("");
     const [hover, setHover] = useState(false);
 
     useEffect(() => {
         if (data) {
-            setStyle(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS)
-        }
+            const activeStyle = data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS;
+            if (tryParse(activeStyle)) {
+                setStyle(activeStyle);
+            };
+        };
     }, [data])
 
     if (error) return <div>failed to load </div>
     if (!data) return <div>loading...</div>
 
-
     async function changeTheme(themeId: string) {
         await fetch(`${import.meta.env.VITE_APP}theme/${themeId}`, {
             method: 'PUT',
         });
-        console.log(data.data)
 
         mutate();
     }
@@ -44,10 +47,33 @@ export default function Themes() {
         setEditComponent("");
     }
 
+    async function deleteTheme(themeId: string) {
+        await fetch(`${import.meta.env.VITE_APP}theme/${themeId}`, {
+            method: 'DELETE',
+        });
+
+        mutate();
+        setEditComponent("");
+    }
+
+    async function createTheme() {
+        await fetch(`${import.meta.env.VITE_APP}theme`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'name': newThemeName,
+                'active': false,
+            }),
+        });
+
+        mutate();
+    };
+
     function tryParse(cssInput: string) {
         try {
             JSON.parse(cssInput);
-            console.log("success", JSON.parse(cssInput))
         } catch (e) {
             return false;
         }
@@ -78,26 +104,50 @@ export default function Themes() {
             <div>
                 AVAILABLE THEMES:
                 <ul>
-                    {data.data.map((theme: any) => <li key={theme.id}><a onClick={() => changeTheme(theme.id)}>{theme.name}{theme.active ? " (Active)" : ""}</a></li>)}
+                    {data.data.map((theme: any) =>
+                        <li key={theme.id}>
+                            <button onClick={() => deleteTheme(theme.id)}>Delete</button>
+                            <a onClick={() => changeTheme(theme.id)}>{theme.name}{theme.active ? " (Active)" : ""}</a>
+                        </li>
+                    )}
                 </ul>
             </div>
+
+            <div style={{"padding": "1rem", margin: "1rem", border: "1px solid black"}}>
                 <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div : {}) : {}}>
-                    <span>Stored Text Theme</span>
+                    Stored Text Theme: Class testing_div
                 </div>
-                <div className={`${hover ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
-                    <span>Live Preview Text theme</span>
+                <div style={style ? (tryParse(style) ? JSON.parse(style).testing_div : {}) : {}}>
+                    Live Preview Text theme: Class: testing_div
+                </div>
+            </div>
+
+            <div style={{"padding": "1rem", margin: "1rem", border: "1px solid black"}}>
+                <div style={style ? (tryParse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS) ? JSON.parse(data.data.filter((theme: IThemeProps) => theme.active)[0].jsonCSS).testing_div_2 : {}) : {}}>
+                    Stored Text Theme: Class testing_div_2
+                </div>
+                <div className={`${hover ? "hover_active" : ""}`} style={style ? (tryParse(style) ? JSON.parse(style).testing_div_2 : {}) : {}}>
+                    Live Preview Text theme: Class: testing_div_2
                 </div>
                 <button className="edit_mark" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={() => setEditComponent("testing_div")}><img className="edit_mark-icon" src="/icons/gear.png" /></button>
-            {editComponent ?
-                <div>
-                    <label>Current CSS: </label>
-                    <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={style} onChange={e => setStyle(e.target.value)} />
-                    <input type="submit" onClick={() => submitChanges()} />
-                </div>
-                :
-                ""
-            }
+            </div>
+
+                        {editComponent ?
+            <div>
+                <label>Current CSS: </label>
+                <input className={`input_text ${tryParse(style) ? "" : "input_invalid"}`} type="text" value={tryParse(style) ? JSON.stringify(JSON.parse(style).testing_div) : style} onChange={e => setStyle(`{"testing_div": ${e.target.value}}`)} />
+                <input type="submit" disabled={!tryParse(style)} onClick={() => submitChanges()} />
+            </div>
+            :""}
             {!tryParse(style) ? <div>Input is in invalid format</div> : ""}
+
+
+
+            <div>
+                <span>New Theme</span>
+                <input value={newThemeName} onChange={(e) => setNewThemeName(e.target.value)} type="text" placeholder="New Theme" />
+                <button onClick={() => createTheme()}>Create Theme</button>
+            </div>
         </div>
     )
 };
