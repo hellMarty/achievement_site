@@ -46,7 +46,7 @@
 }
 
 .input_text {
-    width: 30rem;
+    width: 100%;
 }
 
 .input_invalid, .input_invalid:focus {
@@ -143,3 +143,33 @@
     background-image: linear-gradient(90deg, tan, transparent);
     box-shadow: 0.1rem 0.1rem 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
 }
+
+.edit_bar {
+    width: 100%;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: end;
+    height: 4.5rem;
+    position: fixed;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.edit_card {
+    border: 1px solid black;
+    width: 300px;
+    height: 52px;
+    margin: 0 0.6rem 0.5rem 0;
+    padding: 0.6rem;
+    background-color: rgb(118, 255, 209);
+    
+    transition: height 0.2s;
+    pointer-events: auto;
+}
+
+.opened {
+    height: 250px;
+}
+

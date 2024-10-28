@@ -30,7 +30,6 @@ async function main() {
     });
     
     if (!admin) {
-        console.log("create Administrator")
         await prisma.user.create({
             data: {
                 name: "Administrator",
@@ -45,7 +44,6 @@ async function main() {
     });
 
     if (!defaultTheme) {
-        console.log("create Default Theme")
         await prisma.theme.create({
             data: {
                 name: "Default Theme",

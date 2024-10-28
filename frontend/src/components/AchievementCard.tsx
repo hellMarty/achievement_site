@@ -4,7 +4,6 @@ import { IAchievementProps } from "../interface/AchievementInterface";
 import "../styles/components.css";
 
 export default function AchievementCard(achievementProps: IAchievementProps) {
-    console.log(achievementProps)
     return (
         <div className="achievement-card">
             <div>
@@ -25,7 +24,7 @@ export default function AchievementCard(achievementProps: IAchievementProps) {
                             </button>
                             :
                             null}
-                        <button className="achievement-card__button" onClick={() => deleteMessage(achievementProps)}>
+                        <button className="achievement-card__button" onClick={() => deleteAchievement(achievementProps)}>
                             Remove
                         </button>
                     </div>
@@ -35,7 +34,7 @@ export default function AchievementCard(achievementProps: IAchievementProps) {
     )
 };
 
-const deleteMessage = async (achievementProps: IAchievementProps) => {
+const deleteAchievement = async (achievementProps: IAchievementProps) => {
     await fetch(`${import.meta.env.VITE_APP}achievement/${achievementProps.id}`, {
         method: 'DELETE'
     });
