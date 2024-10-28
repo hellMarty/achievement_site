@@ -18,11 +18,11 @@ import "./styles/pages.css";
 
 export default function App() {
     // Initial Theme fetch. Should set the theme for the App
-    const {data, error} = useSWR(`${import.meta.env.VITE_APP}theme/active`, fetcher);
+    const { data, error } = useSWR(`${import.meta.env.VITE_APP}theme/active`, fetcher);
 
     if (error) return <div>failed to load </div>
     if (!data) return <div>loading...</div>
-    
+
     return (
         <div className="app">
             <MainNavbar />

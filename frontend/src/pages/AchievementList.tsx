@@ -14,8 +14,8 @@ export default function AchievementList() {
     if (achievements.error) return <div>failed to load </div>
     if (!achievements.data) return <div>loading...</div>
 
-    if (achievementTypes.error) return <div>sada</div>
-    if (!achievementTypes.data) return <div>asda</div>
+    if (achievementTypes.error) return <div>Types Failed to Load</div>
+    if (!achievementTypes.data) return <div>Loading Achievement Types...</div>
 
     return (
         <div className="achievement-list">
