@@ -3,11 +3,9 @@ import { IEditCardProp } from "./EditCard";
 
 interface IEditProps {
     editedComponent: string,
-    setCssInput: (_: string) => void,
     style: string,
     setStyle: (_: string) => void,
     getStyle: (_: string) => {},
-    setActiveClass: (_: string) => void,
     openEdit: ([]:IEditCardProp[]) => void,
     cards: IEditCardProp[],
     remove: (_:string) => void,
@@ -20,8 +18,6 @@ export default function EditButton(editProps: IEditProps) {
 
     function editButtonClicked(className: string) {
         createStyleIfNonexist(className);
-        editProps.setActiveClass(className);
-        editProps.setCssInput(JSON.stringify(editProps.getStyle(className)));
         
         const editedCard = editProps.cards.find((card: IEditCardProp) => card.name === className)
 

@@ -10,9 +10,7 @@ export default function Themes() {
     const { data, error, mutate } = useSWR(`${import.meta.env.VITE_APP}theme`, fetcher);
 
     const [style, setStyle] = useState("");
-    const [activeClass, setActiveClass] = useState("");
     const [newThemeName, setNewThemeName] = useState("");
-    const [cssInput, setCssInput] = useState("");
 
     const [openedCards, setOpenedCards] = useState<IEditCardProp[]>([]);
 
@@ -35,27 +33,10 @@ export default function Themes() {
             method: 'PUT',
         });
 
-        setActiveClass("");
-
         mutate();
     }
 
-    async function submitChanges() {
-
-        await fetch(`${import.meta.env.VITE_APP}theme/${data.data.filter((theme: IThemeProps) => theme.active)[0].id}/css`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'jsonCSS': style
-            })
-        });
-
-        mutate();
-    }
-
-    async function submitChangesTwo(newStyle: string) {
+    async function submitChanges(newStyle: string) {
         await fetch(`${import.meta.env.VITE_APP}theme/${data.data.filter((theme: IThemeProps) => theme.active)[0].id}/css`, {
             method: 'PUT',
             headers: {
@@ -161,7 +142,7 @@ export default function Themes() {
                     <div style={getStyle("testing_div")}>
                         Live Preview Text theme: Class: testing_div
                     </div>
-                    <EditButton submit={submitChangesTwo} editedComponent="testing_div" setCssInput={setCssInput} style={style} setStyle={setStyle} getStyle={getStyle} setActiveClass={setActiveClass} openEdit={setOpenedCards} cards={openedCards} remove={remove} />
+                    <EditButton submit={submitChanges} editedComponent="testing_div" style={style} setStyle={setStyle} getStyle={getStyle} openEdit={setOpenedCards} cards={openedCards} remove={remove} />
                 </div>
 
                 <div style={{ "padding": "1rem", margin: "1rem", border: "1px solid black" }}>
@@ -171,7 +152,7 @@ export default function Themes() {
                     <div style={getStyle("testing_div_2")}>
                         Live Preview Text theme: Class: testing_div_2
                     </div>
-                    <EditButton submit={submitChangesTwo} editedComponent="testing_div_2" setCssInput={setCssInput} style={style} setStyle={setStyle} getStyle={getStyle} setActiveClass={setActiveClass} openEdit={setOpenedCards} cards={openedCards} remove={remove} />
+                    <EditButton submit={submitChanges} editedComponent="testing_div_2" style={style} setStyle={setStyle} getStyle={getStyle} openEdit={setOpenedCards} cards={openedCards} remove={remove} />
 
                 </div>
 
